@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class CoinController {
@@ -19,19 +17,12 @@ public class CoinController {
     CoinRepository coinRepos;
 
     @GetMapping(value = "/total", produces = {"application/json"})
-    public ResponseEntity<?> getTotalContents(){
+    public ResponseEntity<?> getTotalContents() {
 
-        List<Coin> coins = new ArrayList<>();
-        coinRepos.findAll().iterator().forEachRemaining(c->coins.add(c));
-        for (Coin c :
-                coins) {
+        coinRepos.findAll().forEach(c -> {
             int quantity = c.getQuantity();
-            System.out.print(quantity +" ");
-            if(quantity == 1){
-                System.out.println(c.getName());
-            }
-            else System.out.println(c.getNameplural());
-        }
+            System.out.println(quantity + " " + (quantity == 1 ? c.getName() : c.getNameplural()));
+        });
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
